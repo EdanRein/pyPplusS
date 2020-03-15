@@ -236,6 +236,8 @@ def get_star_disk_intersection (x_star, y_star, disk_radius, disk_inclination, t
     #Calculate the coefficients of the polynomial
     #Polynomial in t using uniform trigonometric substitution (Weierstrass) for angle in disk.
     #NOTE: where a==0, it crashes.
+    star_disk_intersections = np.empty([len(x_star),4,4])
+    star_disk_intersections[:] = np.nan
     a = disk_radius
     b = a*np.cos(disk_inclination)
     num = x_star**2+y_star**2-1
@@ -244,25 +246,47 @@ def get_star_disk_intersection (x_star, y_star, disk_radius, disk_inclination, t
     coeff_c = -2*a**2+4*b**2+2*num
     coeff_d = coeff_b
     coeff_e = a**2-2*a*x_star+num
+    specialcase = coeff_a==0
+    specinds = np.nonzero(specialcase)[0]
+    speclen = specinds.size
+
+    if speclen>0:
+        star_disk_intersections[specialcase,0,0]=-a[specialcase]
+        star_disk_intersections[specialcase,1,0]=0.0
+        for j in range(speclen):
+            this_ind = specinds[j]
+            t = np.empty(3)
+            t[:] = np.nan
+            tmp = np.roots([coeff_b[this_ind],coeff_c[this_ind],coeff_d[this_ind],coeff_e[this_ind]])
+            t[:tmp.size] = tmp
+            isnr = np.logical_not(t.imag==0)
+            t[isnr] = np.nan
+            #Convert from t to (x,y) coordinates
+            x = a[this_ind]*(1-t**2)/(1+t**2)
+            y = b[this_ind]*2*t/(1+t**2)
+            star_disk_intersections[this_ind,0,1:] = x.real.T
+            star_disk_intersections[this_ind,1,1:] = y.real.T
+            
     #Every row of t corresponds to an input.
-    t = fastquartroots(coeff_a.astype(complex),coeff_b.astype(complex),coeff_c.astype(complex),coeff_d.astype(complex),coeff_e.astype(complex))
+    regcase = np.logical_not(specialcase)
+    t = fastquartroots(coeff_a[regcase].astype(complex),coeff_b[regcase].astype(complex),coeff_c[regcase].astype(complex),coeff_d[regcase].astype(complex),coeff_e[regcase].astype(complex))
     isnr = np.logical_not(t.imag==0)
     t[isnr] = np.nan
     #Convert from t to (x,y) coordinates
-    x = a*(1-t**2)/(1+t**2)
-    y = b*2*t/(1+t**2)
-    star_disk_intersections = np.empty([len(x_star),4,4])
-    star_disk_intersections[:] = np.nan
-    star_disk_intersections[:,0,:] = x.real.T
-    star_disk_intersections[:,1,:] = y.real.T
-    cond = np.any(np.logical_not(isnr),0)
+    x = a[regcase]*(1-t**2)/(1+t**2)
+    y = b[regcase]*2*t/(1+t**2)
+
+    star_disk_intersections[regcase,0,:] = x.real.T
+    star_disk_intersections[regcase,1,:] = y.real.T
+    cond = specialcase
+    cond[regcase] = np.any(np.logical_not(isnr),0)
     #Calculating arguments
     mx = np.repeat(np.reshape(x_star[cond],(len(x_star[cond]),1)),4,axis=1)
     my = np.repeat(np.reshape(y_star[cond],(len(y_star[cond]),1)),4,axis=1)
     star_disk_intersections[cond,2,:] = get_arg(star_disk_intersections[cond,0,:],star_disk_intersections[cond,1,:],mx,my); #Star argument
     star_disk_intersections[cond,3,:] = get_arg(star_disk_intersections[cond,0,:],star_disk_intersections[cond,1,:],0,0); #Disk argument
-    return star_disk_intersections 
-    
+    return star_disk_intersections
+
 def get_disk_planet_intersection (radius_planet, disk_radius, disk_inclination, tol):
     """Returns all the intersections between planet and disk
     
