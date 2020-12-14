@@ -5,6 +5,11 @@ pyPplusS is a model for the light curve of ringed exoplanets transits’ for uni
 
 pyPplusS provides calculation of light curves for ringed, oblate or spherical exoplanets in both the uniform and limb darkened cases.
 
+## Installation
+Run the following to install pyPplusS:
+```pip install pyppluss```
+
+
 ## Package Structure
 
 The package is split into five files:
@@ -15,6 +20,11 @@ The package is split into five files:
 - fastqs is a python implementation of the Fast Quartic Solver described by [Strobach (2010)](https://www.sciencedirect.com/science/article/pii/S0377042710002128).
 
 Detailed descriptions of all inputs and outputs are given by comment lines and documentation text in the code.
+
+## Usage
+To use pyPplusS, import the following function: ```from pyppluss.segment_models import LC_ringed```
+
+This function will return the light curve of ringed exoplanets transits’ for limb darkened stars.
 
 ## Dependencies
 
