@@ -38,7 +38,7 @@ if __name__ == "__main__":
         vals = LC(radius_planet, radius_in, radius_out, x_planet, y_planet, ring_inclination, ring_rotation, opacity, 0.0, 0.448667, 0.0 ,0.313276,n_center=orders[k],n_gress=orders[k])
         err[k] = abs(vals-valstrue)
         #Plotting
-        plt.semilogy(x_planet,vals-valstrue,'o-')
-        plt.text(x_planet[n],vals[n]-valstrue[n],"n="+orders[k].__str__())
+        plt.semilogy(x_planet,err[k],'o-')
+        plt.text(x_planet[n],err[k][n],"n="+orders[k].__str__())
         
     plt.grid()
