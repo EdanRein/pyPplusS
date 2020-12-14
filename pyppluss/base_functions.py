@@ -20,7 +20,7 @@ v30-Aug-2017
 
 import numpy as np
 import math as M
-from .fastqs import QuarticSolverVec as fastquartroots
+from pyppluss.fastqs import QuarticSolverVec as fastquartroots
 
 def simpledist(u,v):
     """

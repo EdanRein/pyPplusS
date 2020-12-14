@@ -29,10 +29,10 @@ v26-May-2018
 """
 import numpy as np
 import math as M
-from .base_functions import coord_swap, get_disk_planet_intersection, get_star_disk_intersection, get_star_planet_intersection
-from .polygon_plus_segments import intersection_area as double_hidden_area
-from .polygon_plus_segments import handler, Star, Planet, Disk, border_sort
-from .fastqs import QuarticSolverVec as fastquartroots
+from pyppluss.base_functions import coord_swap, get_disk_planet_intersection, get_star_disk_intersection, get_star_planet_intersection
+from pyppluss.polygon_plus_segments import intersection_area as double_hidden_area
+from pyppluss.polygon_plus_segments import handler, Star, Planet, Disk, border_sort
+from pyppluss.fastqs import QuarticSolverVec as fastquartroots
 from scipy.special import roots_legendre
 
 #%% Base Models

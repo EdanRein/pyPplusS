@@ -16,10 +16,10 @@ v26-May-2018
 -Modified the point attribute to include two points
 -Implemented use of two test points on the border of each curve instead of one
 """
-from .base_functions import get_coord_circle, get_coord_ellipse, get_arg, sector_area_disk, sector_area_planet, sector_area_star, get_dha_border, triangle_area
+from pyppluss.base_functions import get_coord_circle, get_coord_ellipse, get_arg, sector_area_disk, sector_area_planet, sector_area_star, get_dha_border, triangle_area
 import math as M
 import numpy as np
-from .base_functions import simpledist as edist
+from pyppluss.base_functions import simpledist as edist
 
 class Curve:
     """Parent class for all curves, with a few common methods.
