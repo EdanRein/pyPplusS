@@ -449,7 +449,7 @@ def integrate_swapped(n_center,n_gress,radius_planet, radius_in, radius_out, x_p
 
     #Ensure all splitr values are on the interval [0,rcrit]
     #Check whether there are points beyond one - whether there is a interval [a,rcrit] which requires numerical integration
-    splitr_decider = np.zeros_like(splitr[:,2:]).astype(np.bool)
+    splitr_decider = np.zeros_like(splitr[:,2:]).astype(bool)
     splitr_decider[np.isnan(splitr[:,2:])] = True
     splitr_decider[~np.isnan(splitr[:,2:])] = splitr[:,2:][~np.isnan(splitr[:,2:])] < rcrit
     todo_start = np.all(splitr_decider, -1)
